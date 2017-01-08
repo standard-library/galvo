@@ -1,6 +1,6 @@
 {
   "name": "@standard-library/galvo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Not a slideshow",
   "main": "index.js",
   "scripts": {
