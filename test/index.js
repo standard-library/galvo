@@ -1,6 +1,7 @@
-const test = require("tape");
-const galvo = require("../");
-const K = require("kefir");
+import test from "tape";
+import { Kefir as K } from "kefir";
+
+import galvo from "..";
 
 test('default item', (t) => {
   const slideshow = galvo({}, ["a", "b", "c"]);
