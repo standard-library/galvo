@@ -32,7 +32,6 @@ function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, slides) {
   const previous = delay(1, current);
 
   return {
-    index,
     current,
     currentIndex,
     previous,
