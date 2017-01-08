@@ -13,12 +13,12 @@ yarn add @standard-library/galvo
 ## Usage
 
 ```javascript
-const slides = [1, 2, 3];
+const items = ["a", "b", "c"];
 const advance = K.interval(3000).take(3);
-const slideshow = galvo({ advance }, slides);
+const slideshow = galvo({ advance }, items);
 
 slideshow.current.log();
-// => 1---2---3---1
+// => a---b---c---a
 slideshow.previous.log();
-// => ----1---2---3
+// => ----a---b---c
 ```
