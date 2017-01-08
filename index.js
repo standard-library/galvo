@@ -39,4 +39,4 @@ function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, collectio
   }
 }
 
-module.exports = galvo;
+export default galvo;
