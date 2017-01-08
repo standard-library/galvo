@@ -9,8 +9,8 @@ const ALWAYS = (x) => () => x;
 
 const delay = (n, s) => s.slidingWindow(n + 1, 2).map(([i, _]) => i);
 
-function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, slides) {
-  const length = slides.length;
+function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, collection) {
+  const length = collection.length;
 
   const nextT = advance.map(() => ADD1);
   const previousT = recede.map(() => SUBTRACT1);
@@ -26,7 +26,7 @@ function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, slides) {
       .scan((i, transform) => transform(i), 0)
       .map((i) => (i + length) % length);
 
-  const current = currentIndex.map((i) => slides[i]);
+  const current = currentIndex.map((i) => collection[i]);
 
   const previousIndex = delay(1, currentIndex);
   const previous = delay(1, current);
