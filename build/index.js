@@ -33,16 +33,13 @@ var delay = function delay(n, s) {
   });
 };
 
-function galvo() {
-  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      _ref3$advance = _ref3.advance,
+function galvo(_ref3, collection) {
+  var _ref3$advance = _ref3.advance,
       advance = _ref3$advance === undefined ? NEVER : _ref3$advance,
       _ref3$recede = _ref3.recede,
       recede = _ref3$recede === undefined ? NEVER : _ref3$recede,
       _ref3$index = _ref3.index,
       index = _ref3$index === undefined ? ZERO : _ref3$index;
-
-  var collection = arguments[1];
 
   var length = collection.length;
 

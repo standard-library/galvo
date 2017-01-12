@@ -9,7 +9,7 @@ const ALWAYS = (x) => () => x;
 
 const delay = (n, s) => s.slidingWindow(n + 1, 2).map(([i, _]) => i);
 
-function galvo({ advance = NEVER, recede = NEVER, index = ZERO } = {}, collection) {
+function galvo({ advance = NEVER, recede = NEVER, index = ZERO }, collection) {
   const length = collection.length;
 
   const nextT = advance.map(() => ADD1);
