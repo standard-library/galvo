@@ -53,10 +53,8 @@ function galvo(_ref3, collection) {
   var transformations = _kefir.Kefir.merge([nextT, previousT, indexT]);
 
   var currentIndex = transformations.scan(function (i, transform) {
-    return transform(i);
-  }, 0).map(function (i) {
-    return (i + length) % length;
-  });
+    return (transform(i) + length) % length;
+  }, 0);
 
   var current = currentIndex.map(function (i) {
     return collection[i];

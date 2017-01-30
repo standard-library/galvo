@@ -80,6 +80,22 @@ test('wraps current to origin at end of sequence', (t) => {
   assert_values(["c", "a"], slideshow.current, t);
 });
 
+test('wraps current to origin at end of sequence twice', (t) => {
+  const slideshow = galvo({
+    advance: K.sequentially(1, [true, true, true, true])
+  }, ["a", "b"]);
+
+  assert_values(["a", "b", "a", "b", "a"], slideshow.current, t);
+});
+
+test('wraps current to origin at end of sequence twice in reverse', (t) => {
+  const slideshow = galvo({
+    recede: K.sequentially(1, [true, true, true, true])
+  }, ["a", "b"]);
+
+  assert_values(["a", "b", "a", "b", "a"], slideshow.current, t);
+});
+
 test('wraps current to end at beginning of sequence', (t) => {
   const slideshow = galvo({
     recede: K.sequentially(1, [true])

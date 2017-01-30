@@ -23,8 +23,7 @@ function galvo({ advance = NEVER, recede = NEVER, index = ZERO }, collection) {
 
   const currentIndex =
     transformations
-      .scan((i, transform) => transform(i), 0)
-      .map((i) => (i + length) % length);
+      .scan((i, transform) => (transform(i) + length) % length, 0);
 
   const current = currentIndex.map((i) => collection[i]);
 
