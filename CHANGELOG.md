@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# HEAD
+# 0.1.3
 
 * Fix wrapping index in reverse
 
