@@ -33,6 +33,40 @@ var delay = function delay(n, s) {
   });
 };
 
+/**
+ * @typedef {Object} Galvo
+ * @property {Kefir.Stream} current - Stream emitting the current item of the
+ *   collection.
+ * @property {Kefir.Stream} currentIndex - Stream emitting the index of the
+ *   current item of the collection.
+ * @property {Kefir.Stream} previous - Stream emitting the previous item of the
+ *   collection.
+ * @property {Kefir.Stream} previousIndex - Stream emitting the index of the
+ *   previous item of the collection.
+ */
+
+/**
+ * Uploads a file to an S3 bucket.
+ * @param {Object} config
+ * @param {Kefir.Stream} config.advance - A stream that emits a value whenever
+ *   the index should advance one position. Defaults to never.
+ * @param {Kefir.Stream} config.recede - A stream that emits a value whenever
+ *   the index should recede one position. Defaults to never.
+ * @param {Kefir.Stream} config.index  - A stream that emits an integers
+ *   representing the current index. Defaults to emitting a single 0 index.
+ * @param {Array} config
+ * @returns {Galvo}
+ * @example
+ *
+ *   const items = ["a", "b", "c"];
+ *   const advance = Kefir.interval(3000).take(3);
+ *   const cycle = galvo({ advance }, items);
+ *
+ *   cycle.current.log();
+ *   // => a---b---c---a
+ *   cycle.previous.log();
+ *   // => ----a---b---c
+ */
 function galvo(_ref3, collection) {
   var _ref3$advance = _ref3.advance,
       advance = _ref3$advance === undefined ? NEVER : _ref3$advance,
@@ -42,6 +76,9 @@ function galvo(_ref3, collection) {
       index = _ref3$index === undefined ? ZERO : _ref3$index;
 
   var length = collection.length;
+  var applyT = function applyT(i, transform) {
+    return (transform(i) + length) % length;
+  };
 
   var nextT = advance.map(function () {
     return ADD1;
@@ -52,10 +89,7 @@ function galvo(_ref3, collection) {
   var indexT = index.map(ALWAYS);
   var transformations = _kefir.Kefir.merge([nextT, previousT, indexT]);
 
-  var currentIndex = transformations.scan(function (i, transform) {
-    return (transform(i) + length) % length;
-  }, 0);
-
+  var currentIndex = transformations.scan(applyT, 0);
   var current = currentIndex.map(function (i) {
     return collection[i];
   });
