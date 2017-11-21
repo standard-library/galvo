@@ -26,7 +26,7 @@ test('advances', (t) => {
     advance: K.sequentially(1, [true])
   }, ["a", "b", "c"]);
 
-  assert_values(["a", "b"], slideshow.current, t);
+  assertValues(["a", "b"], slideshow.current, t);
 });
 
 test('recedes', (t) => {
@@ -35,7 +35,7 @@ test('recedes', (t) => {
     recede: K.sequentially(1, [true])
   }, ["a", "b", "c"]);
 
-  assert_values(["b", "a"], slideshow.current, t);
+  assertValues(["b", "a"], slideshow.current, t);
 });
 
 test('providing index as constant stream', (t) => {
@@ -77,7 +77,7 @@ test('wraps current to origin at end of sequence', (t) => {
     advance: K.sequentially(1, [true])
   }, ["a", "b", "c"]);
 
-  assert_values(["c", "a"], slideshow.current, t);
+  assertValues(["c", "a"], slideshow.current, t);
 });
 
 test('wraps current to origin at end of sequence twice', (t) => {
@@ -85,7 +85,7 @@ test('wraps current to origin at end of sequence twice', (t) => {
     advance: K.sequentially(1, [true, true, true, true])
   }, ["a", "b"]);
 
-  assert_values(["a", "b", "a", "b", "a"], slideshow.current, t);
+  assertValues(["a", "b", "a", "b", "a"], slideshow.current, t);
 });
 
 test('wraps current to origin at end of sequence twice in reverse', (t) => {
@@ -93,7 +93,7 @@ test('wraps current to origin at end of sequence twice in reverse', (t) => {
     recede: K.sequentially(1, [true, true, true, true])
   }, ["a", "b"]);
 
-  assert_values(["a", "b", "a", "b", "a"], slideshow.current, t);
+  assertValues(["a", "b", "a", "b", "a"], slideshow.current, t);
 });
 
 test('wraps current to end at beginning of sequence', (t) => {
@@ -101,7 +101,7 @@ test('wraps current to end at beginning of sequence', (t) => {
     recede: K.sequentially(1, [true])
   }, ["a", "b", "c"]);
 
-  assert_values(["a", "c"], slideshow.current, t);
+  assertValues(["a", "c"], slideshow.current, t);
 });
 
 test('follows arbitrary index stream', (t) => {
@@ -109,14 +109,23 @@ test('follows arbitrary index stream', (t) => {
     index: K.sequentially(1, [1, 2, 1, 3])
   }, ["a", "b", "c"]);
 
-  assert_values([0, 1, 2, 1, 0], slideshow.currentIndex, t);
+  assertValues([0, 1, 2, 1, 0], slideshow.currentIndex, t);
 });
 
-function assert_values(values, stream, t) {
+test('skips duplicate indexes', (t) => {
+  const slideshow = galvo({
+    index: K.sequentially(1, [1, 1, 1, 1])
+  }, ["a", "b", "c"]);
+
+  slideshow.currentIndex.log();
+
+  assertValues([0, 1], slideshow.currentIndex, t);
+});
+
+function assertValues(values, stream, t) {
   stream
-    .take(values.length)
     .scan((returns, v) => returns.concat(v), [])
-    .skip(values.length - 1)
+    .last()
     .onValue(function (final) {
       t.same(values, final);
       t.end();

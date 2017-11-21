@@ -52,7 +52,7 @@ function galvo({ advance = NEVER, recede = NEVER, index = ZERO }, collection) {
   const indexT = index.map(ALWAYS);
   const transformations = K.merge([nextT, previousT, indexT]);
 
-  const currentIndex = transformations.scan(applyT, 0);
+  const currentIndex = transformations.scan(applyT, 0).skipDuplicates();
   const current = currentIndex.map(i => collection[i]);
 
   const previousIndex = delay(1, currentIndex);

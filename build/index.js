@@ -89,7 +89,7 @@ function galvo(_ref3, collection) {
   var indexT = index.map(ALWAYS);
   var transformations = _kefir.Kefir.merge([nextT, previousT, indexT]);
 
-  var currentIndex = transformations.scan(applyT, 0);
+  var currentIndex = transformations.scan(applyT, 0).skipDuplicates();
   var current = currentIndex.map(function (i) {
     return collection[i];
   });
