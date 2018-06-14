@@ -117,9 +117,15 @@ test('skips duplicate indexes', (t) => {
     index: K.sequentially(1, [1, 1, 1, 1])
   }, ["a", "b", "c"]);
 
-  slideshow.currentIndex.log();
-
   assertValues([0, 1], slideshow.currentIndex, t);
+});
+
+test('current index does not emit for empty array', (t) => {
+  const slideshow = galvo({
+    index: K.sequentially(1, [1, 1, 1, 1])
+  }, []);
+
+  assertValues([], slideshow.currentIndex, t);
 });
 
 function assertValues(values, stream, t) {
